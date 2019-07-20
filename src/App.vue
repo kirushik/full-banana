@@ -1,20 +1,56 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <div><input v-model="title" /></div>
+    <div><textarea v-model="text" /></div>
+    <div><input v-model="passphrase" /></div>
+    <div><button @click="qrMe()">QR Me!</button></div>
+    <div v-if="qrData.length>0">
+      <QrCode :data="qrData" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from './components/HelloWorld.vue';
+
+import * as lzma from 'lzma-purejs';
+import * as scrypt from 'scryptsy';
+import * as cbor from 'cbor';
+
+import * as crypto from 'tweetnacl-ts';
+
+import QrCode from './components/QrCode.vue';
 
 @Component({
   components: {
-    HelloWorld,
+    QrCode,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  private title = 'Secret title';
+  private text = 'Fill me';
+  private passphrase = 'abcdefgh';
+  private qrData = new Uint8Array([]);
+
+  private qrMe(): void {
+    const compressedText = lzma.compressFile(new TextEncoder().encode(this.text));
+
+    const salt = new Buffer(crypto.hash(new TextEncoder().encode(this.title)));
+    // tslint:disable-next-line:no-bitwise
+    const key = scrypt.default(this.passphrase, salt, 1 << 15, 8, 1, 32 /*crypto.SecretBoxLength.Key*/);
+    const nonce = crypto.randomBytes(24 /*crypto.SecretBoxLength.Nonce*/);
+    const encryptedText = crypto.secretbox(compressedText, nonce, key);
+
+    const qrMessage = {
+      version: 1,
+      title: this.title,
+      nonce,
+      text: encryptedText,
+    };
+
+    this.qrData = cbor.encode(qrMessage);
+  }
+}
 </script>
 
 <style>

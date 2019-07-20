@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es5",
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
@@ -9,6 +9,9 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+
+    "noImplicitAny": false, // lzma-purejs doesn't have any definitions yet, unfortunately
+
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
