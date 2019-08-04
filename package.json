@@ -10,9 +10,9 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "cbor": "^4.1.5",
     "core-js": "^2.6.5",
     "lzma-purejs": "https://github.com/elderapo/lzma-purejs",
+    "protobufjs": "^6.8.8",
     "qrcode-generator": "^1.4.3",
     "scryptsy": "^2.1.0",
     "tweetnacl-ts": "^1.0.1",

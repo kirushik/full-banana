@@ -15,11 +15,11 @@ import { Component, Vue } from 'vue-property-decorator';
 
 import * as lzma from 'lzma-purejs';
 import * as scrypt from 'scryptsy';
-import * as cbor from 'cbor';
-
 import * as crypto from 'tweetnacl-ts';
 
 import QrCode from './components/QrCode.vue';
+
+import { QrMessage } from './utils/serialization';
 
 @Component({
   components: {
@@ -41,14 +41,8 @@ export default class App extends Vue {
     const nonce = crypto.randomBytes(24 /*crypto.SecretBoxLength.Nonce*/);
     const encryptedText = crypto.secretbox(compressedText, nonce, key);
 
-    const qrMessage = {
-      version: 1,
-      title: this.title,
-      nonce,
-      text: encryptedText,
-    };
-
-    this.qrData = cbor.encode(qrMessage);
+    const qrMessage = new QrMessage({title: this.title, nonce, data: encryptedText});
+    this.qrData = QrMessage.encode(qrMessage).finish();
   }
 }
 </script>
