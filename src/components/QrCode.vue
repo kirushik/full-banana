@@ -1,5 +1,5 @@
 <template>
-  <div v-html="qrCodeHTML"></div>
+  <div id="secretQR" v-html="qrCodeHTML"></div>
 </template>
 
 <script lang="ts">
@@ -15,7 +15,20 @@ export default class QrCode extends Vue {
       const qr = qrcode.default(0, 'L');
       qr.addData(new TextDecoder('iso-8859-1').decode(this.data));
       qr.make();
-      return qr.createSvgTag(4);
+      return qr.createSvgTag({scalable: true});
   }
 }
 </script>
+
+<style>
+@media print {
+  #secretQR {
+    width: 750px;
+  }
+}
+@media screen {
+  #secretQR {
+    width: 200px;
+  }
+}
+</style>

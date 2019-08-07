@@ -1,13 +1,17 @@
 <template>
   <main>
-    <h1>Printing</h1>
-    <div><input v-model="title" /></div>
-    <div><textarea v-model="text" /></div>
-    <div><input v-model="passphrase" /></div>
-    <div><button @click="qrMe()">QR Me!</button></div>
+    <div class="screen-only">
+      <h1>Printing</h1>
+      <div><input v-model="title" /></div>
+      <div><textarea v-model="text" /></div>
+      <div><input v-model="passphrase" /></div>
+      <div><button @click="qrMe()">QR Me!</button></div>
+    </div>
+    <h1 class="print-only">{{title}}</h1>
     <div v-if="qrData.length>0">
       <QrCode :data="qrData" />
     </div>
+    <button id="printMe" class="screen-only" v-if="qrData.length>0" title="Print me!" @click="printMe()">🖨️</button>
   </main>
 </template>
 
@@ -45,6 +49,6 @@ export default class App extends Vue {
     const qrMessage = new QrMessage({title: this.title, nonce, data: encryptedText});
     this.qrData = QrMessage.encode(qrMessage).finish();
   }
+  private printMe(): void { window.print(); }
 }
 </script>
-

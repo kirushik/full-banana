@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <nav>
+    <nav class="screen-only">
       <router-link to="/">Print</router-link> |
       <router-link to="/scan">Scan</router-link>
     </nav>
@@ -24,5 +24,16 @@ nav a.router-link-exact-active {
   text-decoration: none;
   cursor: pointer;
   pointer-events: none;
+}
+
+@media print {
+  .screen-only {
+    display: none;
+  }
+}
+@media screen {
+  .print-only {
+    display: none;
+  }
 }
 </style>

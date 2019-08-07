@@ -8,9 +8,13 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
+import { QrMessage } from '../utils/serialization';
+
 export default class Scan extends Vue {
-  private onDecode(result): void {
-    console.log(result);
+  private onDecode(result: string): void {
+    let data = new TextEncoder().encode(result);
+    let message = QrMessage.decode(data);
+    console.log(message);
   }
 }
 </script>
