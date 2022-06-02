@@ -12,7 +12,7 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "lzma-purejs": "https://github.com/elderapo/lzma-purejs",
-    "protobufjs": "^6.8.8",
+    "protobufjs": "^6.11.3",
     "qrcode-generator": "^1.4.3",
     "scryptsy": "^2.1.0",
     "tweetnacl-ts": "^1.0.1",
